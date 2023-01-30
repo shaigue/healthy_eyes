@@ -5,9 +5,12 @@ import csv
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime, timedelta
+import logging
 
 from input_monitor import InputMonitor
 from recurring_timer import RecurringTimer
+
+logging.basicConfig(level=logging.INFO)
 
 
 class WidgetLogger:
@@ -21,6 +24,7 @@ class WidgetLogger:
         with open(self.csv_file, 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow([datetime_str, value])
+        logging.info(f'value recorded {value} at {datetime_str}')
 
 
 def create_enter_eye_strain_level_message_box():
@@ -51,7 +55,11 @@ def main():
         callback=create_enter_eye_strain_level_message_box
     )
 
-    input_monitor = InputMonitor('data/input_monitor.csv', frequency_in_sec=60)
+    activity_interval = timedelta(minutes=1)
+    input_monitor = InputMonitor(
+        csv_file='data/input_monitor.csv',
+        activity_interval=activity_interval,
+    )
 
     enter_eye_strain_level_alarm.start()
     input_monitor.start()
