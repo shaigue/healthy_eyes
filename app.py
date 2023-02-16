@@ -3,28 +3,16 @@
 #   the result is recorded with the time and date and appended to a csv file.
 import csv
 import tkinter as tk
+from pathlib import Path
 from tkinter import messagebox
 from datetime import datetime, timedelta
 import logging
 
 from input_monitor import InputMonitor
 from recurring_timer import RecurringTimer
+from symptoms_menu import get_symptoms_window
 
 logging.basicConfig(level=logging.INFO)
-
-
-class WidgetLogger:
-    def __init__(self, widget, csv_file):
-        self.widget = widget
-        self.csv_file = csv_file
-
-    def log_widget_value(self):
-        datetime_str = str(datetime.now())
-        value = self.widget.get()
-        with open(self.csv_file, 'a', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow([datetime_str, value])
-        logging.info(f'value recorded {value} at {datetime_str}')
 
 
 def create_enter_eye_strain_level_message_box():
@@ -35,20 +23,6 @@ def create_enter_eye_strain_level_message_box():
 
 
 def main():
-    window = tk.Tk()
-    label_healthy_eyes = tk.Label(text='Healthy eyes!')
-    label_healthy_eyes.pack()
-
-    label_strain_level = tk.Label(text='Enter your eye-strain levels. 0 is None, 5 is high.')
-    label_strain_level.pack()
-
-    spinbox_strain_level = tk.Spinbox(from_=0, to=5)
-    spinbox_strain_level.pack()
-
-    strain_level_logger = WidgetLogger(spinbox_strain_level, 'data/strain_levels.csv')
-    button_record = tk.Button(text='Record', command=strain_level_logger.log_widget_value)
-    button_record.pack()
-
     enter_eye_strain_level_interval = timedelta(hours=3)
     enter_eye_strain_level_alarm = RecurringTimer(
         delay=enter_eye_strain_level_interval,
@@ -60,6 +34,9 @@ def main():
         csv_file='data/input_monitor.csv',
         activity_interval=activity_interval,
     )
+
+    symptoms_logfile = Path('data/symptoms.log')
+    window = get_symptoms_window(symptoms_logfile)
 
     enter_eye_strain_level_alarm.start()
     input_monitor.start()

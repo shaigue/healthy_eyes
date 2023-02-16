@@ -1,5 +1,6 @@
 import tkinter as tk
 import time
+
 window = tk.Tk()
 
 # frame1 = tk.Frame(relief=tk.GROOVE, borderwidth=5)
@@ -41,31 +42,33 @@ window = tk.Tk()
 # frame2.pack()
 
 
-
 # frm3 = tk.Frame(relief=tk.GROOVE, borderwidth=5, master=window)
-lbl_counter = tk.Label(text='0',width=10, height=10)
+lbl_counter = tk.Label(text='0', width=10, height=10)
+
+
 def increase_handler():
     value = int(lbl_counter['text'])
     value += 1
     lbl_counter['text'] = str(value)
 
-def decrese_handler():
+
+def decrease_handler():
     value = int(lbl_counter['text'])
     value -= 1
     lbl_counter['text'] = str(value)
-    
+
+
 btn_increase = tk.Button(text='+', command=increase_handler, width=10, height=10)
-btn_decrese = tk.Button(text='-', command=decrese_handler, width=10, height=10)
+btn_decrease = tk.Button(text='-', command=decrease_handler, width=10, height=10)
 
 btn_increase.grid(row=0, column=0)
 lbl_counter.grid(row=0, column=1)
-btn_decrese.grid(row=0, column=2)
+btn_decrease.grid(row=0, column=2)
 
 # def key_press_handler(event):
 #     # attr = list(filter(lambda s: not s.startswith('_'), dir(event)))
 #     # print(attr)
 #     print(event.char)
-
 # window.bind('<KeyPress>', key_press_handler)
 
 window.mainloop()

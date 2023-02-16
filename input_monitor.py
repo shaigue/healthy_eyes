@@ -1,4 +1,3 @@
-# TODO: add logging
 import csv
 from datetime import datetime, timedelta
 import logging
